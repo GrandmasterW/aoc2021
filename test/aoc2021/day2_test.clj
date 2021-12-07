@@ -15,24 +15,6 @@
       (is (= [:back 3] (d2/convert-instruction "back 3")))
       ))
 
-(deftest convert-instruction-str-test
-  (testing "simple example string"
-    (is (=
-         [
-          [:forward 5]
-          [:down 5]
-          [:forward 8]
-          [:up 3]
-          [:down 8]
-          [:forward 2]]
-         (d2/convert-instruction-str
-"forward 5
-down 5
-forward 8
-up 3
-down 8
-forward 2")))))
-
 (deftest get-day2-instructions-test
   (testing "loading example file"
     (is (= [
@@ -58,17 +40,11 @@ forward 2")))))
     (is (= {:horizontal 1 :depth 1 :aim 0}
            (d2/execute-day2a
             initial-position
-            (d2/convert-instruction-str
-"forward 1
-down 1"))))
+            [[:forward 1][:down 1]])))
     (is (= {:horizontal 10 :depth 8 :aim 0}
            (d2/execute-day2a
             initial-position
-            (d2/convert-instruction-str
-"forward 5
-down 4
-forward 5
-down 4")))))
+            [[:forward 5][:down 4][:forward 5][:down 4]]))))
   (testing "example commands"
     (is (= {:horizontal 15 :depth 10 :aim 0}
            (d2/execute-day2a

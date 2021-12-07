@@ -1,5 +1,6 @@
 (ns aoc2021.day1
-  (:require [clojure.string :as s]))
+  (:require [clojure.string :as s]
+            [aoc2021.load :as ld]))
 
 (def example-report
   [
@@ -18,11 +19,7 @@
 (def day1-input  "src/aoc2021/day1-input.txt")
 
 (defn get-day1-numbers [filename]
-  (->> filename
-       (slurp)
-       (s/split-lines)
-       (mapv #(Integer/parseInt %1))))
-
+  (ld/load-lines-to-ints filename))
 
 (defn count-inc
   "returns how many increased value differences are contained in v"

@@ -1,5 +1,6 @@
 (ns aoc2021.day2
-  (:require [clojure.string :as s]))
+  (:require [clojure.string :as s]
+            [aoc2021.load :as ld]))
 
 (def day2-example-input  "src/aoc2021/day2-example-input.txt")
 (def day2-full-input  "src/aoc2021/day2-input.txt")
@@ -15,20 +16,12 @@
     (vector (keyword (first vs))
             (Integer/parseInt (second vs)))))
 
-
-(defn convert-instruction-str
-  "For a string containing 'direction value' lines, it returns a vector of vectors, each vector consisting of an instruction and a value. The instruction is a keyword, while the value is an integer"
-  [v]
-  (->> v
-       (s/split-lines)
-       (mapv convert-instruction)))
-
 (defn get-day2-instructions
-  "returns a vector of direction vectors" 
+  "returns a vector of direction vectors, loaded from filename" 
   [filename]
   (->> filename
-       (slurp)
-       (convert-instruction-str)))
+       (ld/load-lines-to-vec)
+       (mapv convert-instruction)))
 
 ;; ----------------------------------------------------------------------
 ;; positioning
