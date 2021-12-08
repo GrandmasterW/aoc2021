@@ -4,6 +4,27 @@
 
 ;; not testing transpose...
 
+;; ----------------------------------------------------------------------
+;; conversions
+;; ----------------------------------------------------------------------
+
+(deftest char-to-int-test
+  (testing " to 9"
+    (is (= 9 (ut/char-to-int \9))))
+  (testing " to 0"
+    (is (= 0 (ut/char-to-int \0)))))
+  
+(deftest binstr-to-vec-test
+  (testing "'101001' to [1 0 1 0 0 1]"
+    (is (= [1 0 1 0 0 1]
+           (ut/binstr-to-vec "101001")))))
+
+(deftest binvec-to-int
+  (testing "[1 0 1 0] to 10"
+    (is (= 10
+           (ut/binvec-to-int [1 0 1 0])))))
+
+
 
 ;; ----------------------------------------------------------------------
 ;; max-freq and min-freq

@@ -17,7 +17,7 @@
   [filename]
   (->> filename
        (ld/load-lines-to-vec)
-       (into [])))
+       (mapv ut/binstr-to-vec)))
 
 ;; ----------------------------------------------------------------------
 ;; gamma and epsilon
@@ -44,8 +44,12 @@
 ;; result computation
 ;; ----------------------------------------------------------------------
 
+                
+
 (defn day3a-result
-  "a * b"
-  [a b ]
-  (* a b))
+  "gimme the matrix with integers... I'll return the number"
+  [m]
+  (let [ga (ut/binvec-to-int (gamma m))
+        ep (ut/binvec-to-int (epsilon m))]
+  (* ga ep)))
 
