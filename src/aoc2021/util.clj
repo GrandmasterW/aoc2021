@@ -39,20 +39,21 @@
 ;; frequency handling
 ;; ----------------------------------------------------------------------
 
-(defn max-freq
-  "returns the element with the highest frequency"
-  [f1 f2]
+(defn comp-freq
+  "returns the element with the highest or lowest frequency, based on predicate pred. If both elements have same frequencies, pred selects the fitting one, i.e. the higher first number if >. Examples:\n
+  > [1 3][0 2] -> [1 3]
+  < [1 3][0 2] -> [0 2]
+  > [1 3][0 3] -> [1 3]
+  < [1 3][0 3] -> [0 3] "
+  [pred f1 f2]
   (cond
     (nil? f1) f2
     (nil? f2) f1
-    (> (second f1) (second f2)) f1
+    (= (second f1) (second f2)) (if (pred (first f1) (first f2)) f1 f2)
+    (pred (second f1) (second f2)) f1
     :else f2))
+  
 
-(defn min-freq
-  "returns the element with the lowest frequency"
-  [f1 f2]
-  (cond
-    (nil? f1) f2
-    (nil? f2) f1
-    (< (second f1) (second f2)) f1
-    :else f2))
+(def max-freq (partial comp-freq >))
+
+(def min-freq (partial comp-freq <))
