@@ -142,21 +142,19 @@
       (is (= 5 (:last-draw rs)))
       (is (=   [[[3 true][4 false]]
                 [[5 true][6 false]]]
-               (:bingo rs)))))
-  (testing "full-mode: simple 2x2 example with two boards, find 2nd with first column"
-    (let [bs {:draws [3 5 1 2 6]
-              :boards
-              [
-               [[[1 false][2 false]]
-                [[3 false][4 false]]]
-               [[[3 false][4 false]]
-                [[5 false][6 false]]]
-               ]}
-          rs (d4/apply-draws bs) ]
-      (is (= 1 (:last-draw rs)))
-      (is (=   [[[3 true][4 false]]
-                [[5 true][6 false]]]
-               (:bingo rs)))))) ;; work cannot function correctly
+               (:bingo rs))))))
+
+(deftest apply-draws-last-test
+  (testing "simple 2x3 example with 3 boards, find middle board"
+    (let [bs {:draws [4 3 10 9 6 18],
+              :boards [[[[1 false] [2 false]] [[3 false] [4 false]]]
+                       [[[4 false] [5 false]] [[6 false] [7 false]]]
+                       [[[7 false] [8 false]] [[9 false] [10 false]]]]}
+          rs (d4/apply-draws-last bs)
+          ]
+    (is (= 6 (:last-draw rs)))
+    (is (= [[[4 true] [5 false]] [[6 true] [7 false]]]
+           (:last-board rs))))))
 
 (deftest sum-unmarked-test
   (testing "simple 2x2 example"
@@ -177,6 +175,6 @@
     (is (= 1924
            (d4/day4b-result (d4/get-day4-instructions d4/day4-example-input)))))
   (testing "puzzle input"
-    (is (= 0
+    (is (= 5434
            (d4/day4b-result (d4/get-day4-instructions d4/day4-full-input)))))
   )

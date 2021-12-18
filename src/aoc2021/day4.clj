@@ -8,7 +8,7 @@
 
 
 (def day4-example-input "src/aoc2021/day4-example-input.txt")
-  (def day4-full-input "src/aoc2021/day4-full-input.txt")
+(def day4-full-input "src/aoc2021/day4-full-input.txt")
 
 
 ;; ----------------------------------------------------------------------
@@ -82,7 +82,7 @@
       (some row-all-done? (ut/transpose b))))
 
 (defn apply-draws
-  "subsequently apply bingo numbers to boards until first board is done. Return board and winning number. If full-mode, stop if all boards are done."
+  "subsequently apply bingo numbers to boards until first board is done. Return board and winning number."
   [bs] ; board-structure
   (if (empty? (:draws bs)) bs ; done for bad... 
       (let [draw (first (:draws bs))
@@ -94,11 +94,42 @@
            :last-draw draw
            :bingo (first finished-boards)
            :boards new-boards}
-          ;; else recur with the rest and the new boards
           (recur
-                 {:draws (rest (:draws bs))
-                  :boards new-boards})))))
+           {:draws (rest (:draws bs))
+            :boards new-boards})))))
 
+
+(defn delta-finished-index
+  "return i if o is false, n is true"
+  [o n i]
+  (if (and (not o) n) i))
+
+
+(defn apply-draws-last
+  "subsequently apply bingo numbers to boards until last board is done. Return that board and the last winning number."
+  [bs] ; board-structure
+  (if (empty? (:draws bs)) bs ; finito
+      (let [draw (first (:draws bs))
+            new-boards (mapv (partial apply-number-to-board draw) (:boards bs))
+            last-finished  (mapv board-bingo? (:boards bs))
+            newly-finished (mapv board-bingo? new-boards)
+            latest (filterv identity
+                            (mapv
+                             delta-finished-index
+                             last-finished
+                             newly-finished
+                             (range)))
+            ]
+        (if (every? board-bingo? new-boards)
+          {:draws (:draws bs)
+           :last-draw draw
+           :boards new-boards
+           :last latest
+           :last-board (nth new-boards (first latest))
+           }
+          (recur
+           {:draws (rest (:draws bs))
+            :boards new-boards})))))
 
 (defn sum-unmarked
   "returns the sum of all unmarked numbers on a board"
@@ -118,10 +149,13 @@
   [bs]
   (let [rs (apply-draws bs)
         su (sum-unmarked (:bingo rs))]
-        (* su (:last-draw rs))))
+    (* su (:last-draw rs))))
 
 (defn day4b-result
   "return multiplied results"
   [bs]
-  nil)
+  (let [rs (apply-draws-last bs)
+        su (sum-unmarked (:last-board rs))]
+    (* su (:last-draw rs))))
+
 
