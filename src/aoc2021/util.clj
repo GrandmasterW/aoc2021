@@ -1,4 +1,5 @@
-(ns aoc2021.util)
+(ns aoc2021.util
+  (:require [clojure.string :as str]))
 
 ;; ----------------------------------------------------------------------
 ;; transpose
@@ -57,3 +58,8 @@
 (def max-freq (partial comp-freq >))
 
 (def min-freq (partial comp-freq <))
+
+(defn parse-int
+  "helper for map"
+  [s]
+  (Integer/parseInt s))

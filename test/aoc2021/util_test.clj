@@ -39,3 +39,11 @@
   (testing "simple set of 2"
     (is (= [1 1] (ut/min-freq [0 2][1 1])))))
 
+;; ----------------------------------------------------------------------
+
+(deftest parse-int-test
+  (testing "simple variations of parsing an int"
+    (is (= 45 (ut/parse-int "45")))
+    (is (= -45 (ut/parse-int "-45")))
+    (is (= 10000 (ut/parse-int "10000")))
+    (is (= 45 (ut/parse-int "+45")))))    
