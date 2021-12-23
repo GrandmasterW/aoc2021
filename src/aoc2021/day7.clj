@@ -17,20 +17,31 @@
   [p v]
   (reduce + (mapv #(Math/abs (- % p)) v)))
 
+(defn b-cost
+  [a b]
+  (reduce +
+          (range (inc (Math/abs (- a b))))))
+
+(defn b-pos-cost
+  "returns the sum of all costs if p would be new position for all elements in v"
+  [p v]
+  (reduce + (mapv (partial b-cost p) v)))
 
 (defn min-cost
   "Returns costs of the position that would produce min costs"
-  [v]
-  (let [maxpos (inc (reduce max v))
-        cost-raw (mapv #(pos-cost % v) (range maxpos))
-        ]
-    (reduce min cost-raw)
-  ))
-
+  ([v f]
+   (assert f)
+   (let [maxpos (inc (reduce max v))
+        cost-raw (mapv #(f % v) (range maxpos))]
+     (reduce min cost-raw))))
 
 ;; ----------------------------------------------------------------------
 (defn a-result
   "Part 1 "
   [v]
-  (min-cost v))
+  (min-cost v pos-cost))
 
+(defn b-result
+  "Part 2"
+  [v]
+  (min-cost v b-pos-cost))
